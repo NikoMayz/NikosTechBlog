@@ -18,26 +18,17 @@ Post.init(
     description: {
       type: DataTypes.STRING,
       allowNull: false,
-
     },
     date_created: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    
     user_name: {
       type: DataTypes.STRING,
       references: {
         model: 'user',
         key: 'userName',
-      },
-      comment: {
-        type: DataTypes.STRING,
-        references: {
-            model: 'comment',
-            key: 'description',
-          },
       },
     },
   },
