@@ -1,13 +1,20 @@
 [
-    {
-      "description": "Great article! Thanks for sharing.",
-      "user_name": "jane_smith",
-      "post_id": 1
-    },
-    {
-      "description": "Very informative, I learned a lot.",
-      "user_name": "john_doe",
-      "post_id": 2
-    }
-  ]
-  
+  {
+    "description": "This is the first comment.",
+    "date_created": "2024-07-14T14:30:00Z",
+    "user_id": 1,
+    "post_id": 1
+  },
+  {
+    "description": "This is another comment.",
+    "date_created": "2024-07-15T09:45:00Z",
+    "user_id": 2,
+    "post_id": 1
+  },
+  {
+    "description": "Yet another comment.",
+    "date_created": "2024-07-16T16:00:00Z",
+    "user_id": 1,
+    "post_id": 2
+  }
+]

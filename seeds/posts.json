@@ -1,13 +1,20 @@
 [
-    {
-      "title": "Understanding MVC Architecture",
-      "description": "Model-View-Controller (MVC) is a software design pattern commonly used for developing user interfaces...",
-      "user_name": "john_doe"
-    },
-    {
-      "title": "Introduction to Sequelize ORM",
-      "description": "Sequelize is a promise-based Node.js ORM for Postgres, MySQL, MariaDB, SQLite, and Microsoft SQL Server...",
-      "user_name": "jane_smith"
-    }
-  ]
-  
+  {
+    "title": "First Post",
+    "description": "This is the description of the first post.",
+    "date_created": "2024-07-14T12:00:00Z",
+    "user_id": 1
+  },
+  {
+    "title": "Second Post",
+    "description": "This is the description of the second post.",
+    "date_created": "2024-07-15T10:30:00Z",
+    "user_id": 2
+  },
+  {
+    "title": "Third Post",
+    "description": "This is the description of the third post.",
+    "date_created": "2024-07-16T15:45:00Z",
+    "user_id": 1
+  }
+]
