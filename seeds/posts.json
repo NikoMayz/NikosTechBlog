@@ -1,20 +1,17 @@
 [
   {
-    "title": "First Post",
-    "description": "This is the description of the first post.",
-    "date_created": "2024-07-14T12:00:00Z",
-    "user_id": 1
+    "title": "Post Title 1",
+    "description": "This is the description for post 1",
+    "user_username": "johndoe"
   },
   {
-    "title": "Second Post",
-    "description": "This is the description of the second post.",
-    "date_created": "2024-07-15T10:30:00Z",
-    "user_id": 2
+    "title": "Post Title 2",
+    "description": "This is the description for post 2",
+    "user_username": "janedoe"
   },
   {
-    "title": "Third Post",
-    "description": "This is the description of the third post.",
-    "date_created": "2024-07-16T15:45:00Z",
-    "user_id": 1
+    "title": "Post Title 3",
+    "description": "This is the description for post 3",
+    "user_username": "samsmith"
   }
 ]

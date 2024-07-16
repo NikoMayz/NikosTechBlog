@@ -1,13 +1,17 @@
 [
-    {
-      "name": "john_doe",
-      "email": "john.doe@example.com",
-      "password": "password123"
-    },
-    {
-      "name": "jane_smith",
-      "email": "jane.smith@example.com",
-      "password": "password123"
-    }
-  ]
-  
+  {
+    "userName": "JohnDoe",
+    "email": "john.doe@example.com",
+    "password": "password123"
+  },
+  {
+    "userName": "JaneSmith",
+    "email": "jane.smith@example.com",
+    "password": "password123"
+  },
+  {
+    "userName": "BobJohnson",
+    "email": "bob.johnson@example.com",
+    "password": "password123"
+  }
+]

@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const { Comment } = require('../../models');
+const withAuth = require('../../utils/auth');
 
 // Get all comments
-router.get('/', async (req, res) => {
+router.get('/', withAuth, async (req, res) => {
   try {
     const commentData = await Comment.findAll();
     res.status(200).json(commentData);
@@ -12,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get a single comment by id
-router.get('/:id', async (req, res) => {
+router.get('/:id', withAuth, async (req, res) => {
   try {
     const commentData = await Comment.findByPk(req.params.id);
     if (!commentData) {
@@ -26,9 +27,12 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a new comment
-router.post('/', async (req, res) => {
+router.post('/', withAuth, async (req, res) => {
   try {
-    const newComment = await Comment.create(req.body);
+    const newComment = await Comment.create({
+      ...req.body,
+      user_id: req.session.user_id, // Attaching user_id from session
+    });
     res.status(200).json(newComment);
   } catch (err) {
     res.status(400).json(err);
@@ -36,12 +40,13 @@ router.post('/', async (req, res) => {
 });
 
 // Delete a comment by id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', withAuth, async (req, res) => {
   try {
     const commentData = await Comment.destroy({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+        user_id: req.session.user_id, // Ensuring comment belongs to the logged-in user
+      },
     });
 
     if (!commentData) {

@@ -1,20 +1,27 @@
 [
   {
-    "description": "This is the first comment.",
-    "date_created": "2024-07-14T14:30:00Z",
-    "user_id": 1,
+    "description": "This is a comment for post 1 by johndoe",
+    "user_username": "johndoe",
     "post_id": 1
   },
   {
-    "description": "This is another comment.",
-    "date_created": "2024-07-15T09:45:00Z",
-    "user_id": 2,
+    "description": "This is a comment for post 2 by janedoe",
+    "user_username": "janedoe",
+    "post_id": 2
+  },
+  {
+    "description": "This is a comment for post 3 by samsmith",
+    "user_username": "samsmith",
+    "post_id": 3
+  },
+  {
+    "description": "Another comment for post 1 by janedoe",
+    "user_username": "janedoe",
     "post_id": 1
   },
   {
-    "description": "Yet another comment.",
-    "date_created": "2024-07-16T16:00:00Z",
-    "user_id": 1,
+    "description": "Another comment for post 2 by johndoe",
+    "user_username": "johndoe",
     "post_id": 2
   }
 ]
