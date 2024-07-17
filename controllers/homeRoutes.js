@@ -100,5 +100,15 @@ router.get('/login', (req, res) => {
 
   res.render('login');
 });
+// Render signup page
+router.get('/signup', (req, res) => {
+  // If the user is already logged in, redirect the request to the dashboard
+  if (req.session.logged_in) {
+    res.redirect('/dashboard');
+    return;
+  }
+
+  res.render('signup');
+});
 
 module.exports = router;
