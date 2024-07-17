@@ -8,9 +8,11 @@ router.get('/posts', async (req, res) => {
     const postData = await Post.findAll({
       include: [{ model: User, attributes: ['userName'] }] // Include username in the post data
     });
+
     if (!postData || postData.length === 0) {
       return res.status(404).json({ message: 'No posts found' });
     }
+
     res.status(200).json(postData);
   } catch (err) {
     res.status(500).json({ error: err.message });

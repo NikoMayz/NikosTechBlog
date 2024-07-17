@@ -54,6 +54,21 @@
   nav a:hover {
     text-decoration: underline;
   }
+  /* jass.css or style.css */
+.no-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline; /* Make them look like links */
+  color: inherit; /* Inherit text color */
+}
+
+.no-button:hover {
+  text-decoration: none; /* Remove underline on hover */
+}
+
   
   /* Main content styles */
   main {
