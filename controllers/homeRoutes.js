@@ -11,13 +11,14 @@ router.get('/', async (req, res) => {
         {
           model: User,
           attributes: ['userName'],
+          order: [['createdAt', 'DESC']]
         },
         {
           model: Comment,
           include: [
             {
               model: User,
-              attributes: ['userName'],
+              attributes: ['id'],
             },
           ],
         },

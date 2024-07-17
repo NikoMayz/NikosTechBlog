@@ -1,8 +1,21 @@
 module.exports = {
-    format_date: (date) => {
-      // Format date as MM/DD/YYYY
-      return date.toLocaleDateString();
-    },
+  format_date: (date) => {
+    if (!date) return ''; // Handle case where date is null or undefined
+
+    // Check if `date` is already a Date object, otherwise parse it
+    const newDate = typeof date === 'object' ? date : new Date(date);
+
+    // Format the date as needed
+    return newDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true,
+    });
+  },
     format_amount: (amount) => {
       // format large numbers with commas
       return parseInt(amount).toLocaleString();

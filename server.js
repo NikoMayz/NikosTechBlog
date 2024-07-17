@@ -17,7 +17,7 @@ const hbs = exphbs.create({ helpers });
 const sess = {
   secret: 'Super secret secret',
   cookie: {
-    maxAge: 300000, // 5 minutes
+    maxAge: 300000,
     httpOnly: true,
     secure: false,
     sameSite: 'strict',
@@ -25,8 +25,8 @@ const sess = {
   resave: false,
   saveUninitialized: true,
   store: new SequelizeStore({
-    db: sequelize,
-  }),
+    db: sequelize
+  })
 };
 
 app.use(session(sess));
@@ -37,10 +37,11 @@ app.set('view engine', 'handlebars');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// express.static.mime.define({'text/css': ['css']});
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(routes);
 
 sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log(`Now listening on http://localhost:${PORT}`));
+  app.listen(PORT, () => console.log('Now listening'));
 });

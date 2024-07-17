@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Niko's Tech Blog</title>
+  <title>{{ title }} - Niko's Tech Blog</title>
   <link rel="stylesheet" href="../../public/style.css">
 </head>
 
@@ -23,18 +23,30 @@
       <h1>Niko's Tech Blog</h1>
     </header>
     <main class="container">
-      <h2>All Posts</h2>
-      <div class="posts">
-        {{#each posts}}
-        <div class="post">
-          <h3><a href="/posts/{{id}}">{{title}}</a></h3>
-          <p>{{description}}</p>
-          <p>Created by: {{user.userName}}</p>
-          <p>Posted on: {{format_date createdAt}}</p>
+      <h2>{{ title }}</h2>
+      <p>{{ description }}</p>
+      <p>Created by: {{ user.userName }}</p>
+      <p>Posted on: {{ format_date createdAt }}</p>
+
+      <!-- Comments Section -->
+      <div class="comments">
+        <h4>Comments</h4>
+        {{#each comments}}
+        <div class="comment">
+          <p>{{ this.text }}</p>
+          <p>Commented by: {{ this.user.userName }} on {{ format_date this.createdAt }}</p>
         </div>
         {{else}}
-        <p>No posts available.</p>
+        <p>No comments yet.</p>
         {{/each}}
+        
+        <!-- Comment Form for Logged-in Users -->
+        {{#if logged_in}}
+        <form action="/posts/{{id}}/comments" method="POST">
+          <textarea name="comment" placeholder="Add a comment" required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+        {{/if}}
       </div>
     </main>
     <footer>
