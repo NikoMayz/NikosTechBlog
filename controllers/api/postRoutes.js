@@ -7,8 +7,8 @@ router.get('/posts', async (req, res) => {
   try {
     const postData = await Post.findAll({
       include: [{ model: User, attributes: ['userName'] }] // Include username in the post data
+      
     });
-
     if (!postData || postData.length === 0) {
       return res.status(404).json({ message: 'No posts found' });
     }
@@ -54,11 +54,13 @@ router.post('/posts', withAuth, async (req, res) => {
     const newPost = await Post.create({
       title,
       description,
+      date_created: new Date(), // Set the current date
       userId,
     });
 
     res.status(200).json(newPost);
   } catch (err) {
+    console.error(err); 
     // Handle Sequelize validation errors
     if (err.name === 'SequelizeValidationError') {
       const errors = err.errors.map(error => ({

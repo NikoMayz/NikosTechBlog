@@ -11,8 +11,8 @@
             <input type="text" id="title" name="title" required>
           </div>
           <div>
-            <label for="content">Content</label>
-            <textarea id="content" name="content" required></textarea>
+            <label for="description">Content</label>
+            <textarea id="description" name="description" required></textarea>
           </div>
           <button type="submit">Create Post</button>
         </form>
@@ -39,15 +39,8 @@
       </section>
 
     </main>
-    <footer>
-      <!-- Footer content here -->
-    </footer>
+    
   </div>
+  <script src="./js/posts.js"></script>
 
-  <!-- Include script for logout functionality if logged in -->
-  {{#if logged_in}}
-  <script src="/js/logout.js"></script>
-  {{/if}}
-</body>
-
-</html>
+ 

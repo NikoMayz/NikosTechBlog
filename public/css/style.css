@@ -8,7 +8,6 @@
   /* Body styles */
   body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
     color: #333;
     line-height: 1.6;
   }
@@ -22,7 +21,7 @@
   
   /* Header styles */
   header {
-    background-color: #333;
+    background-color: #310d0d;
     color: #fff;
     padding: 10px 0;
   }
@@ -72,13 +71,26 @@
   
   /* Main content styles */
   main {
-    background-color: #fff;
+    background-color: #e5f1ec;
     padding: 20px;
     margin-top: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
+  .post {
+    border: 2px solid burgundy; /* Set the border color to burgundy */
+    border-radius: 4px; /* Keep the rounded corners */
+    padding: 16px; /* Add some padding for spacing */
+}
+
+.post h2 {
+    color: burgundy; /* Set the text color of the h2 to burgundy */
+    background-color: #310d0d;
+    color: #e5f1ec;
+    padding: 8px; 
+    border-radius: 4px; /* Optional: rounded corners for h2 */
+}
+
   /* Footer styles */
   footer {
     text-align: center;
