@@ -6,9 +6,21 @@ const withAuth = require('../../utils/auth');
 router.get('/posts', async (req, res) => {
   try {
     const postData = await Post.findAll({
-      include: [{ model: User, attributes: ['userName'] }] // Include username in the post data
-      
+      include: [
+        {
+          model: User,
+          attributes: ['userName']
+        },
+        {
+          model: Comment,
+          include: {
+            model: User,
+            attributes: ['userName']
+          }
+        }
+      ]
     });
+
     if (!postData || postData.length === 0) {
       return res.status(404).json({ message: 'No posts found' });
     }
@@ -18,6 +30,7 @@ router.get('/posts', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // Get posts by username
 router.get('/posts/:userId', withAuth, async (req, res) => {
