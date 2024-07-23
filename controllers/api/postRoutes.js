@@ -20,7 +20,7 @@ router.get('/posts', async (req, res) => {
 });
 
 // Get posts by username
-router.get('/posts/:userName', withAuth, async (req, res) => {
+router.get('/posts/:userId', withAuth, async (req, res) => {
   try {
     const userData = await User.findOne({ where: { userName: req.params.userName } });
     if (!userData) {
@@ -43,7 +43,7 @@ router.get('/posts/:userName', withAuth, async (req, res) => {
 router.post('/posts', withAuth, async (req, res) => {
   try {
     const { title, description } = req.body;
-    const userId = req.session.user_id; // Use the user_id from the session
+    const userId = req.session.userId; // Use the user_id from the session
 
     // Validate input
     if (!title || !description) {
@@ -86,7 +86,7 @@ router.put('/posts/:id', withAuth, async (req, res) => {
       return;
     }
 
-    if (postData.userId !== req.session.user_id) { // Corrected to userId
+    if (postData.userId !== req.session.userId) { // Corrected to userId
       res.status(403).json({ message: 'You are not authorized to update this post!' });
       return;
     }
@@ -107,7 +107,7 @@ router.delete('/posts/:id', withAuth, async (req, res) => {
       return;
     }
 
-    if (postData.userId !== req.session.user_id) { // Corrected to userId
+    if (postData.userId !== req.session.userId) { // Corrected to userId
       res.status(403).json({ message: 'You are not authorized to delete this post!' });
       return;
     }

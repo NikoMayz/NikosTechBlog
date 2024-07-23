@@ -3,11 +3,29 @@
   <!-- Loop over each post -->
   {{#each posts}}
     <div class="post">
-      <h2>{{title}}</h2>
+      <h2><a href="/post/{{id}}">{{title}}</a></h2>
       <p class="post-meta">
-        <span>Posted by {{user.userName}}</span>
+        <span>Posted by {{user.userName}} on {{createdAt}}</span>
       </p>
       <p>{{{description}}}</p>
+
+      <!-- Check if there are comments -->
+      {{#if comments.length}}
+        <div class="comments">
+          <h3>Comments</h3>
+          <!-- Loop over each comment -->
+          {{#each comments}}
+            <div class="comment">
+              <p class="comment-meta">
+                <span>Comment by {{user.userName}} on {{formatDate date_created}}</span>
+              </p>
+              <p>{{{content}}}</p>
+            </div>
+          {{/each}}
+        </div>
+      {{else}}
+        <p>No comments yet.</p>
+      {{/if}}
     </div>
   {{/each}}
 {{else}}

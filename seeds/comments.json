@@ -1,27 +1,22 @@
 [
   {
-    "description": "This is a comment for post 1 by johndoe",
-    "user_username": "johndoe",
-    "post_id": 1
+    "content": "Great post!",
+    "userId": 2, 
+    "postId": 1 
   },
   {
-    "description": "This is a comment for post 2 by janedoe",
-    "user_username": "janedoe",
-    "post_id": 2
+    "content": "Interesting topic.",
+    "userId": 1, 
+    "postId": 2 
   },
   {
-    "description": "This is a comment for post 3 by samsmith",
-    "user_username": "samsmith",
-    "post_id": 3
+    "content": "Sweet topic.",
+    "userId": 2, 
+    "postId": 2 
   },
   {
-    "description": "Another comment for post 1 by janedoe",
-    "user_username": "janedoe",
-    "post_id": 1
-  },
-  {
-    "description": "Another comment for post 2 by johndoe",
-    "user_username": "johndoe",
-    "post_id": 2
+    "content": "Sweet phone.",
+    "userId": 3, 
+    "postId": 1 
   }
 ]

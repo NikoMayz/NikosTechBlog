@@ -1,50 +1,80 @@
-
 // Utility function to handle fetch requests
 const fetchData = async (url, options = {}) => {
   try {
-      const response = await fetch(url, options);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      return await response.json();
+    const response = await fetch(url, options);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
   } catch (error) {
-      console.error('Fetch error:', error.message);
-      return null;
+    console.error('Fetch error:', error.message);
+    return null;
   }
 };
 
-// Function to fetch all posts from the backend
-const getAllPosts = () => fetchData('/api/posts/posts');
-
 // Function to fetch posts by username from the backend
-const getPostsByUser = (userName) => fetchData(`/api/posts/posts/${userName}`);
+const getPostsByUser = (userId) => fetchData(`/api/posts/posts${userId}`);
 
 // Function to create a new post via the backend
-const createPost = (title, description) => {
-  return fetchData('/api/posts/posts', {
+const createPost = async (title, description) => {
+  try {
+    const response = await fetch('/api/posts/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, description }),
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to create post.');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Create post error:', error.message);
+    return null;
+  }
+};
+// Render posts to the DOM
+const renderPosts = (posts) => {
+  const postsContainer = document.querySelector('#your-posts-container');
+  if (!postsContainer) {
+    console.error('Posts container not found in the DOM.');
+    return; // Early return if the container is not found
+  }
+  
+  postsContainer.innerHTML = ''; // Clear existing posts
+
+  posts.forEach(post => {
+    console.log('Post:', post);
+
+    const postElement = document.createElement('li');
+    const createdAt = new Date(post.date_created).toLocaleDateString(); // Adjust format as needed
+
+    const userName = post.user ? post.user.userName : 'Unknown User';
+    console.log(`User Name:`, userName);
+
+    postElement.innerHTML = `
+      <a href="/posts/${post.id}">${post.title}</a> - ${createdAt} (User: ${post.userName})
+      <span class="edit-delete">
+        <a href="/posts/${post.id}/edit">Edit</a> | 
+        <a href="/posts/${post.id}/delete">Delete</a>
+      </span>
+    `;
+    postsContainer.appendChild(postElement);
   });
 };
 
-// Function to update an existing post via the backend
-const updatePost = (postId, updatedData) => {
-  return fetchData(`/api/posts/posts/${postId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedData),
-  });
-};
+// Fetch posts on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', async () => {
+  const userName = window.currentUser.userName; // Retrieve username
+  const posts = await getPostsByUser(userName);
 
-// Function to delete a post via the backend
-const deletePost = (postId) => {
-  return fetchData(`/api/posts/posts/${postId}`, {
-      method: 'DELETE',
-  });
-};
-
-document.addEventListener('DOMContentLoaded', () => {
+  if (posts) {
+    renderPosts(posts);
+  }
+  
   // Event listener for creating a new post
-  document.querySelector('#new-post-form').addEventListener('submit', async (event) => {
+  const newPostForm = document.querySelector('#new-post-form');
+  if (newPostForm) {
+    newPostForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const title = document.querySelector('#title').value.trim();
       const description = document.querySelector('#description').value.trim();
@@ -53,47 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const newPost = await createPost(title, description);
           if (newPost) {
               console.log('New post created:', newPost);
-              // Optionally refresh or redirect
+              renderPosts(await getPostsByUser(userName)); // Refresh the posts list
           } else {
               console.error('Failed to create post.');
           }
       }
-  });
+    });
+  }
 });
-
-// // Event listener for updating a post
-// document.querySelector('#update-post-form').addEventListener('submit', async (event) => {
-//   event.preventDefault();
-//   const postId = document.querySelector('#post-id').value.trim();
-//   const updatedTitle = document.querySelector('#updated-title').value.trim();
-//   const updatedDescription = document.querySelector('#updated-description').value.trim();
-  
-//   if (postId && updatedTitle && updatedDescription) {
-//       const updatedPost = await updatePost(postId, { title: updatedTitle, description: updatedDescription });
-//       if (updatedPost) {
-//           console.log('Post updated:', updatedPost);
-//           // Optionally refresh or redirect
-//       } else {
-//           console.error('Failed to update post.');
-//       }
-//   }
-// });
-
-// // Event listener for deleting a post
-// document.querySelector('#delete-post-button').addEventListener('click', async (event) => {
-//   event.preventDefault();
-//   const postId = document.querySelector('#post-id').value.trim();
-  
-//   if (postId) {
-//       const deleted = await deletePost(postId);
-//       if (deleted) {
-//           console.log('Post deleted successfully.');
-//           // Optionally refresh or redirect
-//       } else {
-//           console.error('Failed to delete post.');
-//       }
-//   }
-// });
-
-// // Export functions for use in other parts of the frontend
-// // export { getAllPosts, getPostsByUser };

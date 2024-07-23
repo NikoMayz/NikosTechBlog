@@ -1,17 +1,20 @@
 [
   {
-    "title": "This is Fresh Data",
-    "description": "This is the description for post 1",
-    "user_username": "johndoe"
+    "title": "First Post",
+    "description": "This is the first post.",
+    "date_created": "2024-07-20T10:00:00Z",
+    "userId": 1 
   },
   {
-    "title": "New Title 2",
-    "description": "This is the description for post 2",
-    "user_username": "janedoe"
+    "title": "Second Post",
+    "description": "This is the second post.",
+    "date_created": "2024-07-21T11:00:00Z",
+    "userId": 2 
   },
   {
-    "title": "Post More NEW NEW 3",
-    "description": "This is the description for post 3",
-    "user_username": "samsmith"
+    "title": "Third Post",
+    "description": "This is the third post.",
+    "date_created": "2024-07-21T11:00:00Z",
+    "userId": 3
   }
 ]
