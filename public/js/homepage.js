@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const postId = this.getAttribute('data-id'); // Get the ID of the post from the data attribute
   
         // Fetch the login status from the server
-        fetch('/api/check-login') // This endpoint should return { loggedIn: true/false }
+        fetch('/api/users/check-login') // This endpoint should return { loggedIn: true/false }
           .then(response => response.json())
           .then(data => {
             if (data.loggedIn) {
@@ -31,10 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   
-    // Example function to handle additional functionality on the homepage
+    // function to handle additional functionality on the homepage
     function handleAdditionalFeatures() {
-      // Implement any additional features or event listeners here
-      // For example, if you want to add a click event to a button:
+      
       const someButton = document.querySelector('.some-button');
       if (someButton) {
         someButton.addEventListener('click', () => {

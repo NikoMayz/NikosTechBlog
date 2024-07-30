@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { User } = require('../../models');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
+const withAuth = require('../../utils/auth');
 
 // Route to create a new user
 router.post('/signup', async (req, res) => {
@@ -14,7 +15,7 @@ router.post('/signup', async (req, res) => {
     const { userName, email, password } = req.body;
 
     // Check if username is already taken
-    let existingUser = await User.findOne({ where: { userName } });
+    const existingUser = await User.findOne({ where: { userName } });
     if (existingUser) {
       return res.status(400).json({ message: 'Username already exists. Please choose a different username.' });
     }
@@ -30,11 +31,9 @@ router.post('/signup', async (req, res) => {
     });
 
     // Session handling
-    req.session.save(() => {
-      req.session.user_id = newUser.id;
-      req.session.logged_in = true;
-      res.status(200).json(newUser);
-    });
+    req.session.user_id = newUser.id;
+    req.session.logged_in = true;
+    res.status(200).json(newUser);
   } catch (err) {
     res.status(500).json({ error: 'Failed to create user.' });
   }
@@ -60,11 +59,9 @@ router.post('/login', async (req, res) => {
     }
 
     // Session handling
-    req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
-      res.status(200).json({ user: userData, message: 'You are now logged in!' });
-    });
+    req.session.user_id = userData.id;
+    req.session.logged_in = true;
+    res.status(200).json({ user: userData, message: 'You are now logged in!' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to log in.' });
   }
@@ -81,11 +78,24 @@ router.post('/logout', (req, res) => {
   }
 });
 
-router.get('/api/check-login', (req, res) => {
-  if (req.session.logged_in) {
-    res.json({ loggedIn: true });
-  } else {
-    res.json({ loggedIn: false });
+// Route to check login status
+router.get('/check-login', (req, res) => {
+  res.json({ loggedIn: req.session.logged_in });
+});
+
+// Route to get the current user's details
+router.get('/current', async (req, res) => {
+  try {
+    // Ensure `user_id` is being used correctly
+    const user = await User.findByPk(req.session.user_id, {
+      attributes: ['id', 'userName', 'email'], // Add other attributes as needed
+    });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found!' });
+    }
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch user details.' });
   }
 });
 

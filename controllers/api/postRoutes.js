@@ -1,80 +1,88 @@
 const router = require('express').Router();
-const { Post, User } = require('../../models');
+const { Post, User, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
 // Get all posts
-router.get('/posts', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const postData = await Post.findAll({
+    const postsData = await Post.findAll({
       include: [
-        {
-          model: User,
-          attributes: ['userName']
-        },
+        { model: User, attributes: ['userName'] },
         {
           model: Comment,
-          include: {
-            model: User,
-            attributes: ['userName']
-          }
-        }
-      ]
+          include: [{ model: User, attributes: ['userName'] }],
+        },
+      ],
+      order: [['createdAt', 'DESC']], // Order posts by creation date
     });
 
-    if (!postData || postData.length === 0) {
-      return res.status(404).json({ message: 'No posts found' });
-    }
+    const posts = postsData.map(post => post.get({ plain: true }));
 
-    res.status(200).json(postData);
+    console.log(posts); // Check the structure here
+
+    res.render('homepage', { posts });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json(err);
   }
 });
 
-
-// Get posts by username
-router.get('/posts/:userId', withAuth, async (req, res) => {
+// Get current user
+router.get('/current', withAuth, async (req, res) => {
   try {
-    const userData = await User.findOne({ where: { userName: req.params.userName } });
-    if (!userData) {
+    const user = await User.findByPk(req.session.userId, {
+      attributes: ['id', 'userName', 'email'], // Add other attributes as needed
+    });
+    if (!user) {
       res.status(404).json({ message: 'User not found!' });
       return;
     }
+    res.json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// Get posts by user ID
+router.get('/user/:id', withAuth, async (req, res) => {
+  try {
+    const userId = req.params.id;
 
     const postData = await Post.findAll({
-      where: { userId: userData.id }, // Corrected to userId
-      include: [{ model: User, attributes: ['userName'] }]
+      where: { userId },
+      include: [
+        {
+          model: User,
+          attributes: ['userName'],
+        },
+      ],
+      order: [['createdAt', 'DESC']], // Order posts by creation date
     });
 
-    res.status(200).json(postData);
+    const posts = postData.map(post => post.get({ plain: true }));
+    res.json(posts);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).json(err);
   }
 });
 
 // Create a new post
-router.post('/posts', withAuth, async (req, res) => {
+router.post('/user/:id/post', withAuth, async (req, res) => {
   try {
-    const { title, description } = req.body;
-    const userId = req.session.userId; // Use the user_id from the session
+    const { title, description } = req.body; // Extract title and description from request body
 
-    // Validate input
-    if (!title || !description) {
-      return res.status(400).json({ error: 'Title and description are required.' });
-    }
-
-    // Create the post
     const newPost = await Post.create({
       title,
       description,
-      date_created: new Date(), // Set the current date
-      userId,
+      userId: req.params.id, // Use the user ID from the session
     });
 
-    res.status(200).json(newPost);
+    const postData = await Post.findByPk(newPost.id, {
+      include: [{ model: User, attributes: ['userName'] }],
+    });
+    console.log('Created post data:', postData); // Log the created post data
+    res.status(200).json(postData); // Respond with the created post
   } catch (err) {
-    console.error(err); 
-    // Handle Sequelize validation errors
     if (err.name === 'SequelizeValidationError') {
       const errors = err.errors.map(error => ({
         field: error.path,
@@ -88,7 +96,6 @@ router.post('/posts', withAuth, async (req, res) => {
     res.status(500).json({ error: 'Failed to create post.' });
   }
 });
-
 
 // Update a post
 router.put('/posts/:id', withAuth, async (req, res) => {

@@ -1,63 +1,53 @@
 const router = require('express').Router();
-const { Comment } = require('../../models');
-const withAuth = require('../../utils/auth');
+const { Post, Comment, User } = require('../../models');
 
-// Get all comments
-router.get('/', withAuth, async (req, res) => {
+// Get a single post with comments
+router.get('/post/:id', async (req, res) => {
   try {
-    const commentData = await Comment.findAll();
-    res.status(200).json(commentData);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+    const postData = await Post.findByPk(req.params.id, {
+      include: [
+        { model: User, attributes: ['userName'] },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['userName'] }]
+        }
+      ]
+    });
 
-// Get a single comment by id
-router.get('/:id', withAuth, async (req, res) => {
-  try {
-    const commentData = await Comment.findByPk(req.params.id);
-    if (!commentData) {
-      res.status(404).json({ message: 'No comment found with this id!' });
-      return;
+    if (!postData) {
+      return res.status(404).json({ message: 'Post not found' });
     }
-    res.status(200).json(commentData);
+
+    const post = postData.get({ plain: true });
+
+    res.render('post', post); // Render post.handlebars with the post data
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// Create a new comment
-router.post('/', withAuth, async (req, res) => {
+// Post a new comment
+router.post('/post/:id/comment', async (req, res) => {
   try {
+    if (!req.session.logged_in) {
+      return res.status(401).json({ message: 'You must be logged in to comment' });
+    }
+
+    const { commentContent } = req.body;
+
     const newComment = await Comment.create({
-      ...req.body,
-      user_id: req.session.user_id, // Attaching user_id from session
-    });
-    res.status(200).json(newComment);
-  } catch (err) {
-    res.status(400).json(err);
-  }
-});
-
-// Delete a comment by id
-router.delete('/:id', withAuth, async (req, res) => {
-  try {
-    const commentData = await Comment.destroy({
-      where: {
-        id: req.params.id,
-        user_id: req.session.user_id, // Ensuring comment belongs to the logged-in user
-      },
+      content: commentContent,
+      postId: req.params.id,
+      userId: req.session.user_id, // Use the user ID from the session
     });
 
-    if (!commentData) {
-      res.status(404).json({ message: 'No comment found with this id!' });
-      return;
-    }
+    const commentData = await Comment.findByPk(newComment.id, {
+      include: [{ model: User, attributes: ['userName'] }],
+    });
 
-    res.status(200).json(commentData);
+    res.status(200).json(commentData); // Respond with the created comment
   } catch (err) {
     res.status(500).json(err);
   }
 });
-
 module.exports = router;

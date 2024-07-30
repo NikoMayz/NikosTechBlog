@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Niko's Tech Blog</title>
   <script>
-  window.currentUser = {
-    userName: '{{user.userName}}' 
-  };
-</script>
+    window.currentUser = {
+      userName: '{{user.userName}}' 
+    };
+  </script>
   <link rel="stylesheet" href="./css/jass.css">
   <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -29,17 +29,16 @@
       <h1>Niko's Tech Blog</h1>
     </header>
     <main class="container container-fluid mt-5">
-    {{{ body }}}
-  </main>
-  <footer>
-      
-  </footer>
-  <!-- Include script for logout functionality if logged in -->
-  {{#if logged_in}}
-  <script src="/js/logout.js"></script>
-  {{/if}}
-  <script src="/js/login.js"></script>
-
+      {{{ body }}}
+    </main>
+    <footer>
+      <!-- Footer content -->
+    </footer>
+    {{#if logged_in}}
+    <script src="/js/logout.js"></script>
+    {{/if}}
+    <script src="/js/login.js"></script>
+  </div>
 </body>
 
 </html>
