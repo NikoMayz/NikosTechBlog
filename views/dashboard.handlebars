@@ -1,5 +1,3 @@
-
-
 <main class="container">
   <h2>Dashboard</h2>
 
@@ -16,7 +14,7 @@
         <textarea id="description" name="description" required></textarea>
       </div>
       <div>
-      <button type="submit">Create Post</button>
+        <button type="submit">Create Post</button>
       </div>
     </form>
   </section>
@@ -25,25 +23,19 @@
   <section>
     <h3>Your Posts</h3>
     <ul id="your-posts-container">
-
-    <!-- Posts will be dynamically inserted here -->
-    {{#if yourPosts.length}}
-      {{#each yourPosts}}
-      <li>
-        <a href="/posts/{{id}}">{{title}}</a> - {{date_created}}
-         {{#if user}}
-          (User: {{user.userName}})
-        {{/if}}
-        <span class="edit-delete">
-          <a href="/posts/{{id}}/edit">Edit</a> | 
-          <a href="/posts/{{id}}/delete">Delete</a>
-        </span>
-      </li>
-      {{/each}}
+      {{#if yourPosts.length}}
+        {{#each yourPosts}}
+        <li>
+          <a href="/postdetails/{{id}}" class="post-title">{{title}}</a> - {{date_created}}
+          {{#if user}}
+            (User: {{user.userName}})
+          {{/if}}
+        </li>
+        {{/each}}
+      {{else}}
+      <p>No posts found.</p>
+      {{/if}}
     </ul>
-    {{else}}
-    <p>No posts found.</p>
-    {{/if}}
   </section>
 </main>
 
