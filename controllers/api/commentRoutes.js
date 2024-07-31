@@ -26,6 +26,7 @@ router.get('/post/:id', async (req, res) => {
   }
 });
 
+
 // Post a new comment
 router.post('/post/:id/comment', async (req, res) => {
   try {

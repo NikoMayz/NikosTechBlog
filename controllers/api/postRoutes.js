@@ -66,6 +66,25 @@ router.get('/user/:id', withAuth, async (req, res) => {
   }
 });
 
+// // Get a single post without comments
+// router.get('/postdetails/:id', async (req, res) => {
+//   try {
+//     const postData = await Post.findByPk(req.params.id, {
+//       include: [{ model: User, attributes: ['userName'] }]
+//     });
+
+//     if (!postData) {
+//       return res.status(404).json({ message: 'Post not found' });
+//     }
+
+//     const post = postData.get({ plain: true });
+
+//     res.render('postdetails', post); // Render postdetails.handlebars with the post data
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
 // Create a new post
 router.post('/user/:id/post', withAuth, async (req, res) => {
   try {
@@ -106,7 +125,7 @@ router.put('/posts/:id', withAuth, async (req, res) => {
       return;
     }
 
-    if (postData.userId !== req.session.userId) { // Corrected to userId
+    if (postData.userId !== req.session.user_id) { // Corrected to userId
       res.status(403).json({ message: 'You are not authorized to update this post!' });
       return;
     }
@@ -127,7 +146,7 @@ router.delete('/posts/:id', withAuth, async (req, res) => {
       return;
     }
 
-    if (postData.userId !== req.session.userId) { // Corrected to userId
+    if (postData.userId !== req.session.user_id) { // Corrected to userId
       res.status(403).json({ message: 'You are not authorized to delete this post!' });
       return;
     }

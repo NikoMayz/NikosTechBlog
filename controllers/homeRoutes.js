@@ -69,6 +69,24 @@ router.get('/post/:id', async (req, res) => {
     res.status(500).json(err);
   }
 });
+// Get a single post without comments
+router.get('/postdetails/:id', async (req, res) => {
+  try {
+    const postData = await Post.findByPk(req.params.id, {
+      include: [{ model: User, attributes: ['userName'] }]
+    });
+
+    if (!postData) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const post = postData.get({ plain: true });
+
+    res.render('postdetails', post); // Render postdetails.handlebars with the post data
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // Use withAuth middleware to prevent access to route
 router.get('/dashboard', withAuth, async (req, res) => {
