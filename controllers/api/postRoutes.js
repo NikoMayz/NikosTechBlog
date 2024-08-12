@@ -66,24 +66,25 @@ router.get('/user/:id', withAuth, async (req, res) => {
   }
 });
 
-// // Get a single post without comments
-// router.get('/postdetails/:id', async (req, res) => {
-//   try {
-//     const postData = await Post.findByPk(req.params.id, {
-//       include: [{ model: User, attributes: ['userName'] }]
-//     });
+// // edit a single post by id
 
-//     if (!postData) {
-//       return res.status(404).json({ message: 'Post not found' });
-//     }
+router.get('/editpost/:id', withAuth, async (req, res) => {
+  try {
+    const post = await Post.findByPk(req.params.id);
+    if (!post) {
+      res.status(404).json({ message: 'Post not found' });
+      return;
+    }
 
-//     const post = postData.get({ plain: true });
-
-//     res.render('postdetails', post); // Render postdetails.handlebars with the post data
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+    // Render the edit page with the post data
+    res.render('editpost', {
+      post,
+      logged_in: req.session.logged_in
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Create a new post
 router.post('/user/:id/post', withAuth, async (req, res) => {
@@ -117,7 +118,7 @@ router.post('/user/:id/post', withAuth, async (req, res) => {
 });
 
 // Update a post
-router.put('/posts/:id', withAuth, async (req, res) => {
+router.put('/user/:id/post/:id', withAuth, async (req, res) => {
   try {
     const postData = await Post.findByPk(req.params.id);
     if (!postData) {

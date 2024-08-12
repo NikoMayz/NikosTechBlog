@@ -4,7 +4,7 @@
   <!-- New Post Form -->
   <section>
     <h3>Create a New Post</h3>
-    <form id="new-post-form" action="/api/posts" method="POST">
+    <form id="new-post-form">
       <div>
         <label for="title">Title</label>
         <input type="text" id="title" name="title" required>
@@ -22,19 +22,9 @@
   <!-- Your Posts Section -->
   <section>
     <h3>Your Posts</h3>
+    <p>Click on the title of a post to <b>EDIT</b> it.</p>
     <ul id="your-posts-container">
-      {{#if yourPosts.length}}
-        {{#each yourPosts}}
-        <li>
-          <a href="/postdetails/{{id}}" class="post-title">{{title}}</a> - {{date_created}}
-          {{#if user}}
-            (User: {{user.userName}})
-          {{/if}}
-        </li>
-        {{/each}}
-      {{else}}
-      <p>No posts found.</p>
-      {{/if}}
+      <!-- Posts will be rendered here by JavaScript -->
     </ul>
   </section>
 </main>

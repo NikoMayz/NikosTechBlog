@@ -129,4 +129,22 @@ router.get('/signup', (req, res) => {
   res.render('signup');
 });
 
+router.get('/editpost/:id', withAuth, async (req, res) => {
+  try {
+    const post = await Post.findByPk(req.params.id);
+    if (!post) {
+      res.status(404).json({ message: 'Post not found' });
+      return;
+    }
+
+    res.render('editpost', {
+      post,
+      logged_in: req.session.logged_in
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router;
